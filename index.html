@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreshSpin Rentals — Washer & Dryer Rentals in DFW</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:      #0f1e2e;
+      --navy-mid:  #162535;
+      --navy-card: #1c3048;
+      --blue:      #4A90C4;
+      --blue-soft: #6aadd8;
+      --orange:    #E07B39;
+      --orange-lt: #f09558;
+      --foam:      #cde3f5;
+      --white:     #f0f6fb;
+      --gray:      #7a9ab5;
+      --border:    rgba(74,144,196,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 68px;
+      background: rgba(15,30,46,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; }
+    .nav-logo img { height: 38px; width: 38px; border-radius: 6px; object-fit: contain; }
+    .nav-logo-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.25rem; font-weight: 800; color: var(--white); letter-spacing: -0.01em;
+    }
+    .nav-logo-text span { color: var(--orange); }
+    .nav-links { display: flex; align-items: center; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--foam); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--orange); }
+    .nav-cta { background: var(--orange) !important; color: #fff !important; padding: 0.5rem 1.3rem; border-radius: 6px; }
+    .nav-cta:hover { background: var(--orange-lt) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { width: 24px; height: 2px; background: var(--foam); border-radius: 2px; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 3rem;
+      padding: 8rem 2.5rem 5rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 50% 60% at 80% 40%, rgba(74,144,196,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 35% 45% at 10% 75%, rgba(224,123,57,0.12) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; opacity: 0.03;
+      background-image: linear-gradient(var(--blue) 1px, transparent 1px), linear-gradient(90deg, var(--blue) 1px, transparent 1px);
+      background-size: 52px 52px;
+    }
+    .hero-text { position: relative; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1.4rem;
+      opacity: 0; animation: fadeUp 0.6s 0.15s forwards;
+    }
+    .hero-eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--orange); }
+    .hero h1 {
+      font-family: 'Syne', sans-serif; font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; color: var(--white);
+      opacity: 0; animation: fadeUp 0.7s 0.3s forwards;
+    }
+    .hero h1 .hl { color: var(--blue); }
+    .hero h1 .hl-o { color: var(--orange); }
+    .hero-sub {
+      margin-top: 1.5rem; font-size: 1.05rem; color: var(--foam);
+      line-height: 1.7; max-width: 480px;
+      opacity: 0; animation: fadeUp 0.7s 0.45s forwards;
+    }
+    .hero-actions {
+      margin-top: 2.2rem; display: flex; flex-wrap: wrap; gap: 0.9rem;
+      opacity: 0; animation: fadeUp 0.7s 0.6s forwards;
+    }
+    .btn-orange {
+      background: var(--orange); color: #fff; font-weight: 600; font-size: 0.9rem;
+      padding: 0.8rem 1.8rem; border-radius: 7px; text-decoration: none; border: none; cursor: pointer;
+      letter-spacing: 0.02em; transition: background 0.2s, transform 0.2s, box-shadow 0.2s; display: inline-block;
+    }
+    .btn-orange:hover { background: var(--orange-lt); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(224,123,57,0.35); }
+    .btn-ghost {
+      border: 1.5px solid var(--border); color: var(--foam); font-size: 0.9rem;
+      padding: 0.8rem 1.8rem; border-radius: 7px; text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+    .hero-trust {
+      margin-top: 3rem; display: flex; flex-wrap: wrap; gap: 1.5rem;
+      opacity: 0; animation: fadeUp 0.7s 0.75s forwards;
+    }
+    .trust-item { display: flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; color: var(--gray); }
+    .trust-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+
+    .hero-visual {
+      position: relative; display: flex; align-items: center; justify-content: center;
+      opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+    }
+    .hero-logo-wrap {
+      background: var(--navy-card); border: 1px solid var(--border); border-radius: 20px;
+      padding: 3rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35), 0 0 0 1px rgba(74,144,196,0.08);
+      position: relative;
+    }
+    .hero-logo-wrap img { width: 180px; height: 180px; object-fit: contain; border-radius: 12px; }
+    .hero-stat-row { display: flex; gap: 2rem; }
+    .hero-stat { text-align: center; }
+    .hero-stat-num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--orange); }
+    .hero-stat-label { font-size: 0.72rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+    .hero-badge-float {
+      position: absolute; bottom: -18px; right: -12px;
+      background: var(--navy-card); border: 1px solid rgba(224,123,57,0.3); border-radius: 10px;
+      padding: 0.6rem 1rem; font-size: 0.75rem; color: var(--orange);
+      font-family: 'DM Mono', monospace; letter-spacing: 0.08em;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    /* ─── SECTIONS ─── */
+    .section { padding: 6rem 2.5rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.7rem;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif; font-size: clamp(1.9rem, 4vw, 3rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; color: var(--white); margin-bottom: 1rem;
+    }
+    .section-sub { color: var(--gray); font-size: 1rem; line-height: 1.7; max-width: 500px; }
+    .section-divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* ─── PRICING ─── */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-top: 3.5rem;
+    }
+    .plan-card {
+      background: var(--navy-card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 2rem; display: flex; flex-direction: column; position: relative; overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+    .plan-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); border-color: rgba(74,144,196,0.4); }
+    .plan-card.featured { border-color: var(--orange); box-shadow: 0 0 0 1px rgba(224,123,57,0.2); }
+    .plan-card.featured::before {
+      content: 'MOST POPULAR'; position: absolute; top: 0; right: 0;
+      background: var(--orange); color: #fff; font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 0.15em; padding: 0.3rem 0.8rem; border-bottom-left-radius: 8px;
+    }
+    .plan-icon { font-size: 2rem; margin-bottom: 1.1rem; }
+    .plan-name { font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+    .plan-desc { font-size: 0.88rem; color: var(--gray); line-height: 1.6; margin-bottom: 1.5rem; flex: 1; }
+    .plan-price { margin-bottom: 0.3rem; display: flex; align-items: baseline; gap: 0.35rem; }
+    .plan-price-from { font-size: 0.72rem; color: var(--gray); }
+    .plan-price-num { font-family: 'Syne', sans-serif; font-size: 2.8rem; font-weight: 800; color: var(--orange); }
+    .plan-price-unit { font-size: 0.82rem; color: var(--gray); }
+    .plan-price-range { font-size: 0.75rem; color: var(--blue); margin-bottom: 1.5rem; }
+    .plan-features { list-style: none; margin-bottom: 1.8rem; }
+    .plan-features li {
+      font-size: 0.85rem; color: var(--foam); padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(74,144,196,0.08); display: flex; align-items: center; gap: 0.6rem;
+    }
+    .plan-features li::before { content: '✓'; color: var(--blue); font-weight: 700; flex-shrink: 0; }
+
+    .square-zone { margin-top: auto; }
+    .square-placeholder {
+      background: rgba(74,144,196,0.07); border: 1.5px dashed rgba(74,144,196,0.3);
+      border-radius: 8px; padding: 1rem; text-align: center;
+    }
+    .square-placeholder p { font-size: 0.7rem; font-family: 'DM Mono', monospace; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+    .square-placeholder code { display: block; font-size: 0.62rem; color: var(--gray); background: rgba(0,0,0,0.2); padding: 0.4rem 0.6rem; border-radius: 4px; text-align: left; line-height: 1.5; }
+
+    .square-instructions {
+      margin-top: 2rem; padding: 1.2rem 1.5rem;
+      background: rgba(74,144,196,0.07); border: 1px solid rgba(74,144,196,0.2); border-radius: 10px;
+      font-size: 0.82rem; color: var(--gray); line-height: 1.7;
+    }
+    .square-instructions strong { color: var(--blue); }
+    .square-instructions code { background: rgba(0,0,0,0.2); padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.78rem; }
+
+    /* ─── HOW IT WORKS ─── */
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: var(--border); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; margin-top: 3.5rem;
+    }
+    .step { background: var(--navy-mid); padding: 2rem 1.5rem; }
+    .step-num { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; color: rgba(74,144,196,0.15); line-height: 1; margin-bottom: 0.8rem; }
+    .step h4 { font-size: 0.95rem; font-weight: 600; color: var(--white); margin-bottom: 0.5rem; }
+    .step p { font-size: 0.83rem; color: var(--gray); line-height: 1.65; }
+
+    /* ─── AREA ─── */
+    .area-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+    .city-chips { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1.5rem; }
+    .city-chip { background: var(--navy-card); border: 1px solid var(--border); padding: 0.38rem 0.85rem; border-radius: 5px; font-size: 0.78rem; color: var(--foam); font-family: 'DM Mono', monospace; }
+    .area-note { margin-top: 1.5rem; padding: 1rem 1.2rem; background: rgba(224,123,57,0.08); border-left: 3px solid var(--orange); border-radius: 0 6px 6px 0; font-size: 0.85rem; color: var(--foam); line-height: 1.6; }
+    .map-placeholder { background: var(--navy-card); border: 1px solid var(--border); border-radius: 12px; height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--gray); font-size: 0.85rem; text-align: center; padding: 1.5rem; }
+    .map-placeholder span { font-size: 2rem; }
+    .map-placeholder code { font-size: 0.7rem; color: rgba(74,144,196,0.6); background: rgba(0,0,0,0.2); padding: 0.3rem 0.6rem; border-radius: 4px; font-family: 'DM Mono', monospace; margin-top: 0.5rem; display: block; }
+
+    /* ─── FAQ ─── */
+    .faq-list { margin-top: 3rem; display: flex; flex-direction: column; gap: 0.8rem; max-width: 740px; }
+    .faq-item { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .faq-q { width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500; color: var(--white); }
+    .faq-q:hover { color: var(--blue); }
+    .faq-arrow { color: var(--orange); font-size: 1.1rem; transition: transform 0.25s; flex-shrink: 0; }
+    .faq-item.open .faq-arrow { transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.25s; font-size: 0.88rem; color: var(--gray); line-height: 1.7; padding: 0 1.5rem; }
+    .faq-item.open .faq-a { max-height: 200px; padding: 0 1.5rem 1.2rem; }
+
+    /* ─── CONTACT ─── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; margin-top: 3rem; align-items: start; }
+    .contact-info-block p { font-size: 0.95rem; color: var(--gray); line-height: 1.7; }
+    .contact-detail { display: flex; align-items: flex-start; gap: 0.85rem; margin-top: 1.4rem; }
+    .cd-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(74,144,196,0.12); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .cd-text label { display: block; font-size: 0.67rem; font-family: 'DM Mono', monospace; color: var(--orange); letter-spacing: 0.12em; text-transform: uppercase; }
+    .cd-text span { font-size: 0.9rem; color: var(--foam); }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label { display: block; font-size: 0.7rem; font-family: 'DM Mono', monospace; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.4rem; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: var(--navy-card); border: 1px solid var(--border); border-radius: 7px; padding: 0.75rem 1rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.92rem; outline: none; transition: border-color 0.2s; appearance: none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--blue); }
+    .form-group select option { background: var(--navy-card); }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-submit { width: 100%; padding: 0.9rem; background: var(--orange); border: none; border-radius: 7px; color: #fff; font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .form-submit:hover { background: var(--orange-lt); transform: translateY(-1px); }
+
+    /* ─── FOOTER ─── */
+    footer { background: #080f17; border-top: 1px solid var(--border); padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--white); }
+    .footer-logo span { color: var(--orange); }
+    footer p { font-size: 0.78rem; color: var(--gray); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 6.5rem 1.5rem 4rem; }
+      .hero-visual { display: none; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .area-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      nav { padding: 0 1.2rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .section { padding: 4rem 1.5rem; }
+      footer { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="assets/images/FreshSpinRentalLogo.jpg" alt="FreshSpin Rentals" />
+    <span class="nav-logo-text">Fresh<span>Spin</span> Rentals</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Pricing</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#area">Service Area</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-text">
+    <p class="hero-eyebrow">Serving DFW — North Richland Hills &amp; surrounding cities</p>
+    <h1>Washer &amp; Dryer<br /><span class="hl">Rentals</span> Done<br /><span class="hl-o">Right.</span></h1>
+    <p class="hero-sub">Month-to-month appliance rentals delivered and installed at your home. No contracts, no repair bills, no hassle. We also move appliances when life takes you somewhere new.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-orange">See Plans &amp; Pricing →</a>
+      <a href="#contact" class="btn-ghost">Request a Quote</a>
+    </div>
+    <div class="hero-trust">
+      <span class="trust-item"><span class="trust-dot"></span>No long-term contracts</span>
+      <span class="trust-item"><span class="trust-dot"></span>Delivery &amp; install included</span>
+      <span class="trust-item"><span class="trust-dot"></span>Local DFW owner-operated</span>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-logo-wrap">
+      <img src="assets/images/FreshSpinRentalLogo.jpg" alt="FreshSpin Rentals Logo" />
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <div class="hero-stat-num">$35</div>
+          <div class="hero-stat-label">Starting / mo</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">DFW</div>
+          <div class="hero-stat-label">Service Area</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">0</div>
+          <div class="hero-stat-label">Long contracts</div>
+        </div>
+      </div>
+      <span class="hero-badge-float">✓ Same-week delivery</span>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- PRICING -->
+<section class="section" id="services" style="background:var(--navy-mid);">
+  <div class="section-inner">
+    <p class="section-label">// Plans &amp; Pricing</p>
+    <h2 class="section-title">Pick Your Plan</h2>
+    <p class="section-sub">All rentals include free delivery, installation, and service support. Cancel anytime.</p>
+
+    <div class="pricing-grid">
+
+      <!-- Single Unit -->
+      <div class="plan-card">
+        <div class="plan-icon">👕</div>
+        <div class="plan-name">Single Unit</div>
+        <p class="plan-desc">Just need a washer or just a dryer? Perfect if your home already has one of the two.</p>
+        <div class="plan-price">
+          <span class="plan-price-from">From</span>
+          <span class="plan-price-num">$35</span>
+          <span class="plan-price-unit">/mo</span>
+        </div>
+        <p class="plan-price-range">Single unit: $35 – $45/mo depending on model</p>
+        <ul class="plan-features">
+          <li>One washer or one dryer</li>
+          <li>Free delivery &amp; installation</li>
+          <li>Month-to-month billing</li>
+          <li>Repair support included</li>
+        </ul>
+        <div class="square-zone">
+          <!--
+            ══════════════════════════════════════════
+            SQUARE BUY BUTTON — Single Unit ($35/mo)
+            ──────────────────────────────────────────
+            1. Sign in to square.com/dashboard
+            2. Go to Payment Links → Create a link
+            3. Choose "Sell an Item"
+            4. Title: "Single Unit Rental"
+               Price: $35 | Frequency: Monthly
+            5. Click Share → Buy Button
+            6. Copy the <script> embed code
+            7. DELETE this comment block and the
+               .square-placeholder div below it,
+               then PASTE your <script> tag here
+            ══════════════════════════════════════════
+          -->
+          <div class="square-placeholder">
+            <p>// SQUARE BUTTON — paste embed here</p>
+            <code>Replace with your Square &lt;script&gt; tag</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Set — Featured -->
+      <div class="plan-card featured">
+        <div class="plan-icon">🫧</div>
+        <div class="plan-name">Washer &amp; Dryer Set</div>
+        <p class="plan-desc">Our most popular option. Get both units delivered, installed, and ready to run the same week.</p>
+        <div class="plan-price">
+          <span class="plan-price-from">From</span>
+          <span class="plan-price-num">$50</span>
+          <span class="plan-price-unit">/mo</span>
+        </div>
+        <p class="plan-price-range">Full set: $50 – $65/mo depending on model</p>
+        <ul class="plan-features">
+          <li>Washer + dryer combo</li>
+          <li>Free delivery &amp; installation</li>
+          <li>Month-to-month billing</li>
+          <li>Repair support included</li>
+          <li>Tested &amp; refurbished units</li>
+        </ul>
+        <div class="square-zone">
+          <!--
+            ══════════════════════════════════════════
+            SQUARE BUY BUTTON — Set ($50/mo)
+            ──────────────────────────────────────────
+            Same steps as above.
+            Title: "Washer & Dryer Set Rental"
+            Price: $50 | Frequency: Monthly
+            Tip: In Square branding settings, set
+            button color to #E07B39 to match the site
+            ══════════════════════════════════════════
+          -->
+          <div class="square-placeholder">
+            <p>// SQUARE BUTTON — paste embed here</p>
+            <code>Replace with your Square &lt;script&gt; tag</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Moving -->
+      <div class="plan-card">
+        <div class="plan-icon">🚚</div>
+        <div class="plan-name">Appliance Moving</div>
+        <p class="plan-desc">Moving to a new place? We disconnect, transport, and reinstall your washer &amp; dryer. Open to everyone — renters get a discount.</p>
+        <div class="plan-price">
+          <span class="plan-price-from" style="font-size:0.9rem;color:var(--foam);">Custom quote</span>
+        </div>
+        <p class="plan-price-range">★ Discounted rate for active FreshSpin renters</p>
+        <ul class="plan-features">
+          <li>Safe disconnect &amp; reconnect</li>
+          <li>Covered F-150 transport</li>
+          <li>Available to all customers</li>
+          <li>Renter discount applied</li>
+        </ul>
+        <div class="square-zone" style="margin-top:auto;">
+          <a href="#contact" class="btn-orange" style="display:block;text-align:center;padding:0.75rem 1rem;font-size:0.88rem;">
+            Request a Moving Quote →
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="square-instructions">
+      <strong>💳 How to activate Square payments on this page:</strong> In your Square Dashboard go to <em>Payment Links → Create a link → Sell an item</em>. Set your price and toggle <em>Recurring → Monthly</em> for subscription billing. Then click <em>Share → Buy Button → Copy embed code</em> and paste the <code>&lt;script&gt;</code> snippet into the placeholder boxes above, replacing the placeholder <code>&lt;div&gt;</code>. You can set the button color to <code>#E07B39</code> in Square's branding settings to match the site.
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how" style="background:var(--navy);">
+  <div class="section-inner">
+    <p class="section-label">// Simple process</p>
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-sub">From first contact to laundry day — here's what to expect.</p>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h4>Choose Your Plan</h4>
+        <p>Pick a unit or set above and hit the pay button, or fill out the quote form if you have questions first.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h4>We Reach Out &amp; Schedule</h4>
+        <p>We confirm your order and coordinate a delivery window that works for you — usually within a few days.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h4>Delivery &amp; Installation</h4>
+        <p>We bring the unit to your door, hook everything up, run a test cycle, and make sure it's working before we leave.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h4>Enjoy — We Handle the Rest</h4>
+        <p>Pay month-to-month. If something breaks, we fix it. Need to cancel? No penalty — just give us a heads up.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- SERVICE AREA -->
+<section class="section" id="area" style="background:var(--navy-mid);">
+  <div class="section-inner">
+    <p class="section-label">// Where we serve</p>
+    <h2 class="section-title">Service Area</h2>
+    <div class="area-layout">
+      <div>
+        <p class="section-sub">Based in <strong style="color:var(--foam);">North Richland Hills, TX</strong> — we serve the Mid-Cities corridor and surrounding DFW communities.</p>
+        <div class="city-chips">
+          <span class="city-chip">North Richland Hills</span>
+          <span class="city-chip">Watauga</span>
+          <span class="city-chip">Haltom City</span>
+          <span class="city-chip">Richland Hills</span>
+          <span class="city-chip">Hurst</span>
+          <span class="city-chip">Euless</span>
+          <span class="city-chip">Bedford</span>
+          <span class="city-chip">Keller</span>
+          <span class="city-chip">Colleyville</span>
+          <span class="city-chip">Fort Worth</span>
+          <span class="city-chip">+ more on request</span>
+        </div>
+        <p class="area-note">Don't see your city? Reach out — we're flexible and actively expanding. If you're in the greater DFW area, there's a good chance we can help.</p>
+      </div>
+      <div class="map-placeholder">
+        <span>📍</span>
+        <p>Embed a Google Map of your service area here.</p>
+        <code>&lt;!-- Paste Google Maps iframe here --&gt;</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- FAQ -->
+<section class="section" id="faq" style="background:var(--navy);">
+  <div class="section-inner">
+    <p class="section-label">// Common questions</p>
+    <h2 class="section-title">FAQ</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do I need to sign a long-term contract? <span class="faq-arrow">+</span></button>
+        <div class="faq-a">Nope — all rentals are month-to-month. You can cancel at any time with no penalty. Just give us a heads up so we can schedule a pickup.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What if the appliance breaks down? <span class="faq-arrow">+</span></button>
+        <div class="faq-a">Repairs are on us. Service and maintenance are covered as part of your rental. We'll come out to diagnose and fix the issue — it's one of the biggest perks of renting vs buying.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How quickly can you deliver? <span class="faq-arrow">+</span></button>
+        <div class="faq-a">Most deliveries happen within a few days of signing up. We coordinate a time that works for your schedule and handle all the heavy lifting and hookups.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">I'm a renter — do I need landlord permission? <span class="faq-arrow">+</span></button>
+        <div class="faq-a">That depends on your lease. Most standard leases allow standard appliances. If you're unsure, we're happy to talk through your setup — we work with stackable units and various hookup configurations.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do you move appliances you didn't rent me? <span class="faq-arrow">+</span></button>
+        <div class="faq-a">Yes! Our appliance moving service is open to everyone — not just FreshSpin customers. Active renters just get a discounted rate as a perk of being a client.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I pay each month? <span class="faq-arrow">+</span></button>
+        <div class="faq-a">We use Square for secure online payments. You can pay with any major credit or debit card, Apple Pay, Google Pay, or Cash App Pay. Recurring monthly billing means you set it and forget it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- CONTACT -->
+<section class="section" id="contact" style="background:var(--navy-mid);">
+  <div class="section-inner">
+    <p class="section-label">// Get in touch</p>
+    <h2 class="section-title">Request a Quote</h2>
+    <div class="contact-grid">
+      <div class="contact-info-block">
+        <p>Have questions or want to talk through options before committing? Send a message — we typically respond same day.</p>
+        <div class="contact-detail">
+          <div class="cd-icon">📍</div>
+          <div class="cd-text"><label>Location</label><span>North Richland Hills, TX — serving DFW</span></div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon">📞</div>
+          <div class="cd-text"><label>Phone / Text</label><span>(XXX) XXX-XXXX</span></div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon">✉️</div>
+          <div class="cd-text"><label>Email</label><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b0d8d5dcdcdff0d6c2d5c3d8c3c0d9dec2d5dec4d1dcc39ed3dfdd">[email&#160;protected]</a></span></div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon">🕐</div>
+          <div class="cd-text"><label>Hours</label><span>Mon – Sat &nbsp;·&nbsp; 8am – 7pm</span></div>
+        </div>
+      </div>
+
+      <!--
+        FORM OPTIONS:
+        A) Formspree (free, no backend):
+           Sign up at formspree.io → get your form ID
+           Change this tag to: <form action="https://formspree.io/f/YOUR_ID" method="POST">
+           Remove the onsubmit attribute and JS handleSubmit function
+
+        B) Keep JS handler below and wire to your own API / email service
+      -->
+      <form id="quoteForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" name="fname" placeholder="John" required /></div>
+          <div class="form-group"><label>Last Name</label><input type="text" name="lname" placeholder="Doe" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Phone / Text</label><input type="tel" name="phone" placeholder="(817) 555-0100" /></div>
+          <div class="form-group"><label>Email</label><input type="email" name="email" placeholder="john@email.com" required /></div>
+        </div>
+        <div class="form-group"><label>Your City</label><input type="text" name="city" placeholder="North Richland Hills, TX" /></div>
+        <div class="form-group">
+          <label>Service Needed</label>
+          <select name="service">
+            <option value="">— Select a service —</option>
+            <option>Washer &amp; Dryer Set Rental ($50–$65/mo)</option>
+            <option>Single Unit Rental ($35–$45/mo)</option>
+            <option>Appliance Moving Service</option>
+            <option>Not sure yet — just exploring</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Details or Questions</label><textarea name="message" placeholder="e.g. 2nd floor apartment, need stackable units, moving in 2 weeks..."></textarea></div>
+        <button type="submit" class="form-submit">Send My Request →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Fresh<span>Spin</span> Rentals</div>
+  <p>© 2025 FreshSpin Rentals · North Richland Hills, TX · All rights reserved.</p>
+  <p style="font-size:0.75rem;">Built for DFW families &amp; renters</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    if (links.style.display === 'flex') {
+      links.style.display = '';
+    } else {
+      Object.assign(links.style, {
+        display: 'flex', flexDirection: 'column',
+        position: 'fixed', top: '68px', left: '0', right: '0',
+        background: 'rgba(15,30,46,0.97)', padding: '1.5rem 2rem', gap: '1.2rem',
+        borderBottom: '1px solid rgba(74,144,196,0.2)', backdropFilter: 'blur(12px)',
+        zIndex: '199'
+      });
+    }
+  }
+
+  function handleSubmit(e) {
+    e
